@@ -12,7 +12,8 @@ export default function Home() {
   const fetchTodos = async () => {
     setLoading(true);
     try {
-      const result = await axios.get("/");
+      const result = await axios.get("/todos");
+      console.log(result);
       setLoading(false);
       setTodos(result.data.Data);
     } catch (err) {
@@ -24,7 +25,7 @@ export default function Home() {
   const createTodo = async () => {
     setLoading(true);
     try {
-      await axios.post("/", {
+      await axios.post("/todos", {
         title: todo,
         completed: false,
       });
@@ -40,7 +41,9 @@ export default function Home() {
     setLoading(true);
 
     try {
-      await axios.put(`/${todoId}`);
+      await axios.put(`/todos/${todoId}`, {
+        completed: todoStatus,
+      });
       fetchTodos();
     } catch (error) {
       setLoading(false);
@@ -51,7 +54,7 @@ export default function Home() {
   const deleteTodo = async (todoId) => {
     setLoading(true);
     try {
-      await axios.delete(`/${todoId}`);
+      await axios.delete(`/todos/${todoId}`);
       fetchTodos();
     } catch (error) {
       setLoading(false);
@@ -96,33 +99,33 @@ export default function Home() {
             Todos
           </div>
 
-          {!loading &&
-            todos.length > 0 &&
-            todos.map((element) => {
-              return (
-                <div
-                  key={element.todo_id}
-                  className="w-full flex items-center justify-between px-3 py-3"
-                >
-                  <p>{element.title}</p>
-                  <div className="space-x-3">
-                    <input
-                      type="checkbox"
-                      defaultChecked={element.completed}
-                      onChange={() =>
-                        updateTodo(element.todo_id, !element.completed)
-                      }
-                    />
-                    <button
-                      className="px-2 py-2 bg-red-400 rounded-md"
-                      onClick={() => deleteTodo(element.todo_id)}
-                    >
-                      Delete
-                    </button>
+          {!loading && todos
+            ? todos.map((element) => {
+                return (
+                  <div
+                    key={element.todo_id}
+                    className="w-full flex items-center justify-between px-3 py-3"
+                  >
+                    <p>{element.title}</p>
+                    <div className="space-x-3">
+                      <input
+                        type="checkbox"
+                        defaultChecked={element.completed}
+                        onChange={() =>
+                          updateTodo(element.todo_id, !element.completed)
+                        }
+                      />
+                      <button
+                        className="px-2 py-2 bg-red-400 rounded-md"
+                        onClick={() => deleteTodo(element.todo_id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            : null}
         </div>
       </div>
     </div>

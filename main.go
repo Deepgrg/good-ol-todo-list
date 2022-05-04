@@ -204,8 +204,14 @@ func main() {
 	r.HandleFunc("/todos/{todoId}", DeleteTodo).Methods("DELETE")
 
 	// Enable CORS
+	var allowedOrigings []string
+	if os.Getenv("ENV") == "production" {
+		allowedOrigings = append(allowedOrigings, "https://good-ol-todo-list.vercel.app")
+	} else {
+		allowedOrigings = append(allowedOrigings, "http://localhost:3000")
+	}
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"https://good-ol-todo-list.vercel.app", "http://localhost:3000"},
+		AllowedOrigins:   allowedOrigings,
 		AllowCredentials: true,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
 		// Enable Debugging for testing, consider disabling in production
