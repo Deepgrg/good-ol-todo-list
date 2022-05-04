@@ -1,1 +1,1 @@
-web: go run main.go
+web: /app/bin/good-ol-todo-list
