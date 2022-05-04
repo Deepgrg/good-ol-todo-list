@@ -205,7 +205,7 @@ func main() {
 
 	// Enable CORS
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"https://good-ol-todo-list.vercel.app"},
+		AllowedOrigins:   []string{"https://good-ol-todo-list.vercel.app", "http://localhost:3000"},
 		AllowCredentials: true,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
 		// Enable Debugging for testing, consider disabling in production
