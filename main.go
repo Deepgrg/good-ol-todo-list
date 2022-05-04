@@ -171,13 +171,17 @@ func HelloWorld(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	// Connect to database
-	dbHost := dotenvGetenv("DB_HOST")
-	dbUser := dotenvGetenv("DB_USER")
-	dbPassword := dotenvGetenv("DB_PASSWORD")
-	dbName := dotenvGetenv("DB_NAME")
-	dbPort := dotenvGetenv("DB_PORT")
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai", dbHost, dbUser, dbPassword, dbName, dbPort)
-
+	var dsn string
+	if os.Getenv("ENV") == "production" {
+		dsn = os.Getenv("DATABASE_URL")
+	} else {
+		dbHost := dotenvGetenv("DB_HOST")
+		dbUser := dotenvGetenv("DB_USER")
+		dbPassword := dotenvGetenv("DB_PASSWORD")
+		dbName := dotenvGetenv("DB_NAME")
+		dbPort := dotenvGetenv("DB_PORT")
+		dsn = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai", dbHost, dbUser, dbPassword, dbName, dbPort)
+	}
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Error connecting to the database")
