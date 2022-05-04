@@ -10,7 +10,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 )
 
@@ -172,16 +171,13 @@ func HelloWorld(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	// Connect to database
-	var dsn string
 
+	var dsn string
+	fmt.Println("Database url :" + os.Getenv("DATABASE_URL"))
+	fmt.Println("Env :" + os.Getenv("ENV"))
 	if os.Getenv("ENV") == "production" {
 		dsn = os.Getenv("DATABASE_URL")
 	} else {
-		for _, e := range os.Environ() {
-
-			pair := strings.SplitN(e, "=", 2)
-			fmt.Printf("%s: %s\n", pair[0], pair[1])
-		}
 		dbHost := dotenvGetenv("DB_HOST")
 		dbUser := dotenvGetenv("DB_USER")
 		dbPassword := dotenvGetenv("DB_PASSWORD")
