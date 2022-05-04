@@ -108,7 +108,7 @@ export default function Home() {
                     className="w-full flex items-center justify-between px-3 py-3"
                   >
                     {element.completed ? (
-                      <p className="line-through"></p>
+                      <p className="line-through">{element.title}</p>
                     ) : (
                       <p>{element.title}</p>
                     )}
