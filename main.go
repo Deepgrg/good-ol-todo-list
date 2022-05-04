@@ -176,6 +176,7 @@ func main() {
 	fmt.Println("Database url :" + os.Getenv("DATABASE_URL"))
 	fmt.Println("Env :" + os.Getenv("ENV"))
 	if os.Getenv("ENV") == "production" {
+		fmt.Println("We are in production environment")
 		dsn = os.Getenv("DATABASE_URL")
 	} else {
 		dbHost := dotenvGetenv("DB_HOST")
