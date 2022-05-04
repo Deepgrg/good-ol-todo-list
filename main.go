@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	"github.com/rs/cors"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -170,11 +171,9 @@ func HelloWorld(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	// Connect to database
 
+	// Connect to database
 	var dsn string
-	fmt.Println("Database url :" + os.Getenv("DATABASE_URL"))
-	fmt.Println("Env :" + os.Getenv("ENV"))
 	if os.Getenv("ENV") == "production" {
 		fmt.Println("We are in production environment")
 		dsn = os.Getenv("DATABASE_URL")
@@ -204,6 +203,16 @@ func main() {
 	r.HandleFunc("/todos/{todoId}", UpdateTodo).Methods("PUT")
 	r.HandleFunc("/todos/{todoId}", DeleteTodo).Methods("DELETE")
 
+	// Enable CORS
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		// Enable Debugging for testing, consider disabling in production
+		Debug: true,
+	})
+	handler := c.Handler(r)
+
 	// Server on port 8080
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -211,7 +220,7 @@ func main() {
 	}
 	log.Printf("Listening on port %v", port)
 	addr := fmt.Sprintf(":%v", port)
-	err = http.ListenAndServe(addr, r)
+	err = http.ListenAndServe(addr, handler)
 	if err != nil {
 		log.Fatalf("Internal server error")
 	}
