@@ -1,1 +1,1 @@
-web: /app/bin/good-ol-todo-list
+web: ./bin/good_ol_todo-list
