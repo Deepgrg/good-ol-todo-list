@@ -22,7 +22,8 @@ export default function Home() {
     }
   };
 
-  const createTodo = async () => {
+  const createTodo = async (e) => {
+    e.preventDefault();
     setLoading(true);
     try {
       await axios.post("/todos", {
@@ -77,7 +78,7 @@ export default function Home() {
           <div className="w-full ">
             <form
               className="w-full flex items-center justify-between  px-3 pb-5"
-              onSubmit={createTodo}
+              onSubmit={(e) => createTodo(e)}
             >
               <label>Todo title</label>
               <input
