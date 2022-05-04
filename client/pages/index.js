@@ -107,7 +107,12 @@ export default function Home() {
                     key={element.todo_id}
                     className="w-full flex items-center justify-between px-3 py-3"
                   >
-                    <p>{element.title}</p>
+                    {element.completed ? (
+                      <p className="line-through"></p>
+                    ) : (
+                      <p>{element.title}</p>
+                    )}
+
                     <div className="space-x-3">
                       <input
                         type="checkbox"
