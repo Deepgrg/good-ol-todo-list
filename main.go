@@ -205,7 +205,10 @@ func main() {
 	r.HandleFunc("/todos/{todoId}", DeleteTodo).Methods("DELETE")
 
 	// Server on port 8080
-	port := dotenvGetenv("PORT")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 	log.Printf("Listening on port %v", port)
 	addr := fmt.Sprintf(":%v", port)
 	err = http.ListenAndServe(addr, r)
