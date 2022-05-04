@@ -97,6 +97,7 @@ export default function Home() {
           </div>
 
           {!loading &&
+            todos.length > 0 &&
             todos.map((element) => {
               return (
                 <div
